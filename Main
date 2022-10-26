@@ -1,0 +1,53 @@
+M = 2
+V = 4
+t = [1, 2]
+a = [0.4, 1]
+
+def calc_x(V, M, a, t):
+    x = [1]*(V+1)
+    
+    for n in range (1, V+1):
+        sum = 0
+        for i in range (0, M):
+            if n >= t[i]:
+                sum += a[i]*t[i]*x[n-t[i]]
+            
+        x[n] = sum/n
+    return x
+    
+def calc_po(x):
+    sum = 0
+    for item in x:
+        sum += item
+    return 1/sum
+    
+def calc_pn(x, V, M, a, t):
+    p = [1]*(V+1)
+    p[0] = calc_po(x)
+    
+    for n in range (1, V+1):
+        sum = 0
+        for i in range (0, M):
+            if n >= t[i]:
+                sum += a[i]*t[i]*p[n-t[i]]
+        p[n] = sum/n
+    return p
+    
+def calc_bn (p, V, t, i):
+    sum = 0
+    for n in range (V-t[i-1]+1, V+1):
+        sum += p[n]
+    return sum
+    
+def calc_all (V, M, a, t):
+    x = calc_x(V, M, a, t)
+    p = calc_pn(x, V, M, a, t)
+    b1 = calc_bn(p, V, t, i=1)
+    b2 = calc_bn(p, V, t, i=2)
+  
+    print("Wartości x", x)
+    print("Wartości p", p)
+    print("Wartości b1", b1)
+    print("Wartości b2", b2)
+   
+odp = calc_all (V, M, a, t)
